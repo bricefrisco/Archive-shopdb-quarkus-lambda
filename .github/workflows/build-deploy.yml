@@ -1,0 +1,39 @@
+name: CICD
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Build a native executable
+        run: mvn clean package -Pnative -Dquarkus.native.container-build=true
+
+      - name: Update AWS Lambda functions
+        run: |
+          aws lambda update-function-code --function-name shopdb-get-chest-shops --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-chest-shops-material-names --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-player-chest-shops --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-player --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-player-names --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-player-regions --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-put-region-active --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-region-chest-shops --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-region --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-region-names --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-region-owners --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-regions --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-get-players --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-post-chest-shops --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-post-regions --zip-file fileb://target/function.zip
