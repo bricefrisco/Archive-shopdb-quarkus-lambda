@@ -1,0 +1,40 @@
+package com.ecocitycraft.shopdb.lambda;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.ecocitycraft.shopdb.controllers.ChestShopController;
+import com.ecocitycraft.shopdb.models.chestshops.Server;
+import com.ecocitycraft.shopdb.models.chestshops.TradeType;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import java.util.HashMap;
+import java.util.List;
+
+@Named("chest-shop-material-names-get")
+public class ChestShopMaterialNamesGet implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+    @Inject
+    ChestShopController controller;
+
+    @Override
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent event, Context context) {
+        try {
+            HashMap<String, Object> params = ParameterUtil.mapParams(
+                    event.getQueryStringParameters(),
+                    context.getLogger(),
+                    "server", "tradeType"
+            );
+
+            List<String> result = controller.getChestShopSignMaterialNames(
+                    (Server) params.get("server"),
+                    (TradeType) params.get("tradeType")
+            );
+
+            return ResponseUtil.mapResponse(result, 200);
+        } catch (Exception e) {
+            return ResponseUtil.mapResponse(e);
+        }
+    }
+}
