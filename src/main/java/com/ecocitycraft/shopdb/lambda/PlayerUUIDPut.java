@@ -5,9 +5,9 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.ecocitycraft.shopdb.controllers.PlayerController;
-import org.mapstruct.Named;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.HashMap;
 
 @Named("player-put-uuid")
