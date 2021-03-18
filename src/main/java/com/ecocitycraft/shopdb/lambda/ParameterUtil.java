@@ -53,6 +53,7 @@ public final class ParameterUtil {
                     break;
                 case "name":
                 case "material":
+                case "uuid":
                     v = args.get(param);
                     if (v == null) v = "";
                     result.put(param, v);

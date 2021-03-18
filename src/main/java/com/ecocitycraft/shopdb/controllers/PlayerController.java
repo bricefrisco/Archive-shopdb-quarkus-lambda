@@ -31,7 +31,7 @@ public class PlayerController {
 
     public PaginatedResponse<PlayerDto> getPlayers(
             Integer page,
-             Integer pageSize,
+            Integer pageSize,
             String name,
             SortBy sortBy
     ) {
