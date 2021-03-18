@@ -37,3 +37,4 @@ jobs:
           aws lambda update-function-code --function-name shopdb-get-players --zip-file fileb://target/function.zip
           aws lambda update-function-code --function-name shopdb-post-chest-shops --zip-file fileb://target/function.zip
           aws lambda update-function-code --function-name shopdb-post-regions --zip-file fileb://target/function.zip
+          aws lambda update-function-code --function-name shopdb-put-player-uuid --zip-file fileb://target/function.zip

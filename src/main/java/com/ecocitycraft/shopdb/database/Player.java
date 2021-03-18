@@ -16,6 +16,9 @@ public class Player extends PanacheEntityBase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer id;
 
+    @Column(unique = true, nullable = true)
+    public String uuid;
+
     @Column(unique = true, nullable = false)
     public String name;
 

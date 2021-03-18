@@ -97,4 +97,12 @@ public class PlayerController {
         List<ChestShopDto> results = chestShops.page(page - 1, pageSize).stream().map(ShopDBMapper.INSTANCE::toChestShopDto).collect(Collectors.toList());
         return new PaginatedResponse<>(page, Pagination.getNumPages(pageSize, totalResults), totalResults, results);
     }
+
+    public String setPlayerUuid(String name, String uuid) {
+        Player p = Player.findByName(name);
+        if (p == null) throw new SDBNotFoundException(String.format(ExceptionMessage.PLAYER_NOT_FOUND, name));
+        p.uuid = uuid;
+        p.persist();
+        return "Successfully updated player '" + name + "' with UUID '" + uuid + "'";
+    }
 }
